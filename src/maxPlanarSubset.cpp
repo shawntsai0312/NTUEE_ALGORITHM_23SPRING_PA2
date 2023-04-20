@@ -185,9 +185,9 @@ int main(int argc, char *argv[])
         S[i] = temp;
     }
     int ans = mps(data, M, S, 0, N - 1);
-    cout << ans << endl;
+    // cout << ans << endl;
     fout << ans << endl;
-    cout << "\n";
+    // cout << "\n";
     vector<int> result;
     vector<int> sortResult;
     printPath(data, result, S, 0, N - 1);
@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
     MergeSort(sortResult);
     for (int i = 0; i < sortResult.size(); i++)
     {
-        cout << sortResult[i] << " " << data[sortResult[i]] << "\n";
+        // cout << sortResult[i] << " " << data[sortResult[i]] << "\n";
         fout << sortResult[i] << " " << data[sortResult[i]] << "\n";
     }
 }
