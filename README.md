@@ -1,10 +1,9 @@
-#Max Planar Subset
+# Max Planar Subset
+###### author : B10901176 蔡弘祥
 
-######author : B10901176 蔡弘祥
-
-###How To Compile
+### How To Compile
     make clean
     make
-    
-###How To Run
+
+### How To Run
     ./bin/mps <input file> <output file>
