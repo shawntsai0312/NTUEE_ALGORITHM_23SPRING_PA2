@@ -1,0 +1,13 @@
+line 0 and line 1 overlapped
+line 0 is 0 to 3
+line 1 is 1 to 4
+
+line 0 and line 2 overlapped
+line 0 is 0 to 3
+line 2 is 2 to 5
+
+line 1 and line 2 overlapped
+line 1 is 1 to 4
+line 2 is 2 to 5
+
+3 error(s)

@@ -33,12 +33,12 @@ int main(int argc, char *argv[])
     fin >> N;
 
     line *data = new line[N];
-    for (int i = 0; i < N / 2; i++)
+    for (int i = 0; i < N; i++)
     {
         int node1, node2;
         fin >> node1 >> node2;
-        data[i].small = node1 > node2 ? node1 : node2;
-        data[i].large = node1 > node2 ? node2 : node1;
+        data[i].small = node1 < node2 ? node1 : node2;
+        data[i].large = node1 > node2 ? node1 : node2;
     }
 
     int testResult = 0;
@@ -50,25 +50,25 @@ int main(int argc, char *argv[])
             if (!checkNonOverlapped(data[i], data[j]))
             {
                 testResult++;
-                cout << "line\t" << i << "\tand line\t" << j << "\toverlapped\n"
-                     << "line\t" << i << "\t" << data[i].small << "\t" << data[i].large << "\n"
-                     << "line\t" << j << "\t" << data[j].small << "\t" << data[j].large << "\n"
+                cout << "line " << i << " and line " << j << " overlapped\n"
+                     << "line " << i << " is " << data[i].small << " to " << data[i].large << "\n"
+                     << "line " << j << " is " << data[j].small << " to " << data[j].large << "\n"
                      << "\n";
-                fout << "line\t" << i << "\tand line\t" << j << "\toverlapped\n"
-                     << "line\t" << i << "\t" << data[i].small << "\t" << data[i].large << "\n"
-                     << "line\t" << j << "\t" << data[j].small << "\t" << data[j].large << "\n"
+                fout << "line " << i << " and line " << j << " overlapped\n"
+                     << "line " << i << " is " << data[i].small << " to " << data[i].large << "\n"
+                     << "line " << j << " is " << data[j].small << " to " << data[j].large << "\n"
                      << "\n";
             }
         }
     }
-    if (!testResult)
+    if (testResult == 0)
     {
         cout << "no error\n";
         fout << "no error\n";
     }
     else
     {
-        cout << "there are " << testResult << " error(s)\n";
-        fout << "there are " << testResult << " error(s)\n";
+        cout << testResult << " error(s)\n";
+        fout << testResult << " error(s)\n";
     }
 }
