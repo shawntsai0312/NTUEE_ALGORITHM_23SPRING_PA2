@@ -29,6 +29,6 @@ bin/lc: src/lineChecker.cpp
 	g++ -o bin/lc src/lineChecker.cpp
 
 clean:
-	rm -f program1 program2
+	rm -f bin/mps bin/lc
 
 

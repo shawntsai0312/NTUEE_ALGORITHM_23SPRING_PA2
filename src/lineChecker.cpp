@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
         int node1, node2;
         fin >> node1 >> node2;
         data[i].small = node1 > node2 ? node1 : node2;
-        data[i].small = node1 > node2 ? node2 : node1;
+        data[i].large = node1 > node2 ? node2 : node1;
     }
 
     int testResult = 0;
