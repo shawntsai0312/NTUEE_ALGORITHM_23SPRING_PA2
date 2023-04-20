@@ -67,7 +67,7 @@ int mps(int *data, int **M, int **S, int i, int j)
         else
         {
             // case 1 j==i
-            if (i == j)
+            if (i >= j)
             {
                 M[i][j] = 0;
                 return 0;
@@ -108,11 +108,6 @@ int mps(int *data, int **M, int **S, int i, int j)
                 }
                 // cout << i << "\t" << j << "\t" << M[i][j] << endl;
                 return M[i][j];
-            }
-            else
-            {
-                M[i][j] = 0;
-                return 0;
             }
         }
     }
