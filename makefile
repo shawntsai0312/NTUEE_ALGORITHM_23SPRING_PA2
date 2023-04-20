@@ -13,7 +13,7 @@ all	: bin/mps
 	@echo -n ""
 
 # optimized version
-bin/mps	: src/mps.cpp
+bin/mps	: src/maxPlanarSubset.cpp
 			$(CC) $< -o $@
 # clean all the .o and executable files
 clean:
