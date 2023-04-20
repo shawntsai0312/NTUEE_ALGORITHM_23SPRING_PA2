@@ -109,6 +109,11 @@ int mps(int *data, int **M, int **S, int i, int j)
                 // cout << i << "\t" << j << "\t" << M[i][j] << endl;
                 return M[i][j];
             }
+            else
+            {
+                M[i][j] = 0;
+                return 0;
+            }
         }
     }
 }
