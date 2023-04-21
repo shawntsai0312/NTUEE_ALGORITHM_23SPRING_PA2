@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <time.h>
 using namespace std;
 
 void printPath(int data[], vector<int> &result, int **S, int i, int j)
@@ -88,6 +89,8 @@ int main(int argc, char *argv[])
     {
         fout << p << " " << data[p] << "\n";
     }
+    clock_t totalTime = clock();
+    cout<<"total time: "<<(float)totalTime/CLOCKS_PER_SEC<<endl;
 
     return EXIT_SUCCESS;
 }
