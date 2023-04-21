@@ -1,93 +1,125 @@
-#include <algorithm>
-#include <vector>
 #include <iostream>
 #include <fstream>
+#include <queue>
+#include <time.h>
+
 using namespace std;
 
-void printPath(int data[], vector<int> &result, int **S, int i, int j)
+// mps_tool.h
+int **Matrix2D(int, int);
+int **MPS(int *, int);
+void MPS_result(int **, int *, queue<int>&, int, int);
+// mps_tool.cpp
+int **Matrix2D(int n, int m)//declare nxm matrix
 {
-    if (i >= j)
-        return;
-    if (data[j] == i)
+    int** Mtx = new int*[n];
+    for(int i=0; i<n; i++)
     {
-        result.push_back(i);
-        result.push_back(j);
-        printPath(data, result, S, i + 1, j - 1);
+        Mtx[i] = new int[m];
     }
-    else if (S[i][j] == S[i][j - 1])
-    {
-        printPath(data, result, S, i, j - 1);
-    }
-    else
-    {
-        result.push_back(j);
-        result.push_back(data[j]);
-        printPath(data, result, S, i, data[j] - 1);
-        printPath(data, result, S, data[j] + 1, j - 1);
-    }
+    return Mtx;
 }
-
-int main(int argc, char *argv[])
+int **MPS(int *C, int n)
 {
-    fstream fin(argv[1]);
-    fstream fout;
-    fout.open(argv[2], ios::out);
-    int n = 0;
-    fin >> n;
-
-    int data[180000] = {};
-    for (int i = 0; i < n >> 1; i++)
+    int **M = Matrix2D(n, n);
+    int **A = Matrix2D(n, n);
+    for (int i=0;i<n;i++)
     {
-        int a = 0, b = 0;
-        fin >> a >> b;
-        data[a] = b;
-        data[b] = a;
+        M[i][i] = 0;
     }
-
-    int **map = new int *[n];
-    for (int i = 0; i < n; i++)
+    for (int i=n-2; i>=0; i--)
     {
-        map[i] = new int[n]();
-    }
-
-    for (int i = n - 1; i >= 0; i--)
-    {
-        for (int j = i + 1; j < n; j++)
+        for (int j=i+1; j<n; j++)
         {
-            if (data[j] == i)
+            if (C[i]<i || C[i]>j)
             {
-                map[i][j] = map[i + 1][j - 1] + 1;
+                M[i][j] = M[i+1][j];
             }
-            else if (data[j] > j || data[j] < i)
+            else if (C[i]==j)
             {
-                map[i][j] = map[i][j - 1];
+                M[i][j] = M[i+1][j-1] + 1;
+                A[i][j] = 1;
             }
             else
             {
-                int c = map[i][data[j] - 1] + map[data[j] + 1][j - 1] + 1;
-                int nc = map[i][j - 1];
-                map[i][j] = max(c, nc);
+                int q1 = M[i+1][C[i]-1] + M[C[i]+1][j] + 1;
+                int q2 = M[i+1][j];
+                if (q1 >= q2)
+                {
+                    M[i][j] = q1;
+                    A[i][j] = 2;
+                }
+                else
+                {
+                    M[i][j] = q2;
+                }
             }
         }
     }
-
-    fout << map[0][n - 1] << "\n";
-    vector<int> result;
-    printPath(data, result, map, 0, n - 1);
-    vector<int> sorted(result.size() >> 1);
-    for (int i = 0; i < result.size() >> 1; i++)
+    return A;
+}
+void MPS_result(int **A, int *C, queue<int>& R, int p, int r)
+{
+    if(r<=p)
+        return;
+    
+    switch(A[p][r])
     {
-        if (result[i << 1] > result[(i << 1) + 1])
-        {
-            swap(result[i << 1], result[(i << 1) + 1]);
-        }
-        sorted[i] = result[i << 1];
+        case 1:
+            R.push(p);
+            MPS_result(A, C, R, p+1, r-1);
+            break;
+        case 2:
+            R.push(p);
+            MPS_result(A, C, R, p+1, C[p]-1);
+            MPS_result(A, C, R, C[p]+1, r);
+            break;
+        default:
+            MPS_result(A, C, R, p+1, r);
+            break;
     }
-    sort(sorted.begin(), sorted.end());
-    for (int p : sorted)
+}
+
+int main(int argc, char* argv[])
+{
+    //read input
+    char buffer[200];
+    fstream fin(argv[1]);
+    fstream fout;
+    fout.open(argv[2],ios::out);
+    int pts;
+    fin >> pts;
+    fin.getline(buffer,200);
+    int num1, num2;
+
+    int *Set = new int[pts];
+    for (int i=0; i<pts; i++)
     {
-        fout << p << " " << data[p] << "\n";
+        Set[i] = -1;
     }
 
-    return EXIT_SUCCESS;
+    while (fin >> num1 >> num2)
+    {
+        Set[num1] = num2;
+        Set[num2] = num1;
+    }
+    //find answer
+    int **Ans = Matrix2D(pts, pts);
+    Ans = MPS(Set, pts);
+    queue<int> Result;
+    MPS_result(Ans, Set, Result, 0, pts-1);
+
+    //result
+    int resultSize = Result.size();
+    fout<<resultSize<<endl;
+    for (int i=0;i<resultSize;i++)
+    {
+        fout<<Result.front()<<" "<<Set[Result.front()]<<endl;
+        Result.pop();
+    }
+    fin.close();
+    fout.close();
+    clock_t totalTime = clock();
+    cout<<"total time: "<<(float)totalTime/CLOCKS_PER_SEC<<endl;
+    return 0;
 }
