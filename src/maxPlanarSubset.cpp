@@ -147,7 +147,6 @@ int main(int argc, char *argv[])
     fstream fin(argv[1]);
     fstream fout;
     fout.open(argv[2], ios::out);
-
     /*----------------------- convert .in into data ----------------------*/
     // N is the total number of nodes
     int N;
